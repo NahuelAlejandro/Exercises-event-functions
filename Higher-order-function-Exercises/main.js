@@ -28,7 +28,7 @@ console.log(mapArray)
 
 function mostAlcoholicBeers(beers) {
 
-    let newArray = beers.filter((beer) => beer.abv >= 7.5);
+    let newArray = beers.toSorted((a, b)=> b.abv-a.abv).slice(0,10);
 
  return newArray
    
@@ -41,7 +41,7 @@ console.log(mostAlcoholicBeers(beers))
 
 function leastBitter (beers){
     
-    let newArray = beers.filter((beer) => beer.ibu < 42);
+    let newArray = beers.toSorted((a, b)=> a.ibu-b.ibu).slice(0,10);
 
     return newArray
 }
@@ -51,7 +51,7 @@ console.log(leastBitter(beers))
 // Ejercicio 6
 function nameBeer (beers, name){
 
-    let newArray = beers.filter((beer) => beer.name == name);
+    let newArray = beers.filter((beer) => beer.name.toLowerCase() == name.toLowerCase());
     
     return newArray
 }
@@ -77,46 +77,26 @@ function ibuBeer (beers, ibu){
 console.log(ibuBeer(beers, 30))
 
 
-// Ejercicio 8
-
-
-
-// function positionName (array, name ){
-
-//   const result = array.map((beer, index)=>{
-//         if(beer.name.toLowerCase() == name.toLowerCase()){
-//             return index
-//         }    
-//     })
-//     const newArray = result.filter(e => e != undefined)
-
-//     if(newArray == ""){
-//        return `${name} does not exist.`
-//     } return newArray
-//  }
-    
-// console.log(positionName(beers, "Buzz"))
-
 
 // Ejercicio 8 2da forma 
  
 
-function positionName (array, name ){
+// function positionName (array, name ){
     
-    const newArray = array.findIndex(beer => beer.name.toLowerCase() == name.toLowerCase())
-    const filter = array.filter(beer => beer.name.toLowerCase() == name.toLowerCase())
+//     const newArray = array.findIndex(beer => beer.name.toLowerCase() == name.toLowerCase())
+//     const filter = array.filter(beer => beer.name.toLowerCase() == name.toLowerCase())
     
    
-    if(filter == "" && newArray){
-         return `${name} does not exist.`
-    }else{
-       return `index: ${newArray}` 
-    }
+//     if(filter == "" && newArray){
+//          return `${name} does not exist.`
+//     }else{
+//        return `index: ${newArray}` 
+//     }
    
     
- }
+//  }
     
-console.log(positionName(beers, "buzz"))
+// console.log(positionName(beers, "buzz"))
 
 
 // Ejercicio 9
@@ -155,39 +135,40 @@ console.log(abvFilter(beers, 4.5))
 
 
 function propertyOrder(array, property, boolean) {
-    let result = []
+   
     const element = array.map( element => element[`${property}`])
-
+    let newArray  
     if(boolean){
-             element.toSorted((a, b )=>{
-                if(a < b){
-                    return -1
-                }else if(a > b){
-                    return 1
-                }else{
-                    return 0
-                }
-            })
-    }else{
-         element.toSorted((a, b )=>{
-        if(a > b){
+      newArray = element.map(e=> e).toSorted((a, b)=> {
+
+        if(a < b){
             return -1
-        }else if(a < b){
+        }else if(a > b){
             return 1
         }else{
             return 0
         }
-    })}
-
-    for (let i = 0; i < 10; i++) {
-        result.push(element[i])
-        
+      })      
+    
     }
-    return result
+    else{
+        newArray = element.map(e=> e).toSorted((a, b)=>{
+            
+            if(a > b){
+                        return -1
+                    }else if(a < b){
+                        return 1
+                    }else{
+                        return 0
+                    }
+        })
+    }
+    return newArray.slice(0,10)
+
 }
       
 
-console.log(propertyOrder(beers, "name", true))
+console.log(propertyOrder(beers, "name", false))
 
 
 const container = document.getElementById("container")
